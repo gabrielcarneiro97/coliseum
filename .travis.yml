@@ -3,7 +3,7 @@ node_js:
   - "node"
 
 install:
-  - npm i -g webpack
+  - npm i -g webpack-cli
 
 before_script:
   - webpack
