@@ -4,6 +4,7 @@ node_js:
 
 install:
   - npm i -g webpack-cli
+  - npm i
 
 before_script:
   - webpack
