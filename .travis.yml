@@ -3,10 +3,10 @@ node_js:
   - "node"
 
 install:
-  - yarn global add webpack
+  - npm i -g webpack
 
 before_script:
   - webpack
 
 script:
-  - yarn test-build
+  - npm run test-build
