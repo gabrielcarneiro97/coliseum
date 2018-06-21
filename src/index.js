@@ -1,7 +1,8 @@
-export function teste() {
-  console.log('teste');
-}
+import Coliseum from './classes/Coliseum';
+import ColiseumField from './classes/ColiseumField';
 
-export function teste2() {
-  console.log('teste2');
-}
+const app = new Coliseum({ dbHost: '' });
+
+app.model('Test', { array: ColiseumField.Array(), string: ColiseumField.String() });
+
+console.log(app.models.Test);

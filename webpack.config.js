@@ -11,6 +11,9 @@ fs.readdirSync('node_modules')
   });
 
 module.exports = {
+  optimization: {
+    minimize: false,
+  },
   entry: './src/index.js',
   target: 'node',
   output: {
