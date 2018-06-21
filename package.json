@@ -7,6 +7,9 @@
   "author": "Gabriel Carneiro <gabriel.carneiro97@live.com>",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "test-build": "node ./build/index.js"
+  },
   "dependencies": {
     "express": "^4.16.3",
     "graphql": "^0.13.2",
