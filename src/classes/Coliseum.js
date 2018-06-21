@@ -8,6 +8,11 @@ class Coliseum {
     this.models = {};
     this.routers = {};
     this.expressApp = express();
+    this.server = {
+      close: () => {
+        throw new Error('Server not started');
+      },
+    };
   }
 
   model(name, data, events) {
@@ -20,9 +25,13 @@ class Coliseum {
   }
 
   start(port = 8080) {
-    this.expressApp.listen(port, () => {
+    this.server = this.expressApp.listen(port, () => {
       console.log('Coliseum App listening at 8080');
     });
+  }
+
+  close() {
+    this.server.close();
   }
 }
 

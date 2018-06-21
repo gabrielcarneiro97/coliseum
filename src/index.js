@@ -13,3 +13,4 @@ app.model(
 );
 
 app.start();
+app.close();
