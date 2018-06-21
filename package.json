@@ -1,0 +1,14 @@
+{
+  "name": "coliseum",
+  "version": "0.0.1",
+  "description": "A modular API framework to handle the requests and the DB access",
+  "main": "index.js",
+  "repository": "https://github.com/gabrielcarneiro97/coliseum.git",
+  "author": "Gabriel Carneiro <gabriel.carneiro97@live.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "express": "^4.16.3",
+    "mongoose": "^5.1.6"
+  }
+}
