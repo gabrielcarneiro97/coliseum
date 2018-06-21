@@ -1,10 +1,10 @@
 language: node_js
 
 install:
-  - yarn
+  - yarn global add webpack
 
 before_script:
-  - npx webpack
+  - webpack
 
 script:
   - yarn test-build
