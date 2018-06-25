@@ -1,16 +1,20 @@
 import Coliseum from './classes/Coliseum';
-import ColiseumField from './classes/ColiseumField';
+import ColiseumProps from './classes/ColiseumProps';
 
-const app = new Coliseum({ dbHost: '' });
+// const app = new Coliseum({ dbHost: '' });
 
-app.model(
-  'Person',
-  ColiseumField.shapeOf({
-    name: ColiseumField.string.isRequired,
-    age: ColiseumField.number.isRequired,
+const person = ColiseumProps.shapeOf({
+  name: ColiseumProps.string.isRequired,
+  age: ColiseumProps.number,
+  address: ColiseumProps.shapeOf({
+    street: ColiseumProps.string.isRequired,
+    number: ColiseumProps.number.isRequired,
   }),
-);
+  cell: ColiseumProps.arrayOf([
+    ColiseumProps.string,
+    ColiseumProps.number,
+  ]).isRequired,
+});
 
-console.log(ColiseumField.arrayOf([
-  ColiseumField.string,
-]));
+console.log(person.is({ name: 'Gabriel', age: 20, address: { street: 'rua', number: 404 } }));
+console.log(person.is({ name: 'Gabriel', cell: ['11', 11] }));
