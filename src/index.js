@@ -11,7 +11,6 @@ app.model(
   }),
 );
 
-console.log(ColiseumField.shapeOf({
-  name: ColiseumField.string.isRequired,
-  age: ColiseumField.number.isRequired,
-}).isRequired);
+console.log(ColiseumField.arrayOf([
+  ColiseumField.string,
+]));

@@ -1,5 +1,5 @@
 class ColiseumField {
-  constructor(fieldString, required, shape) {
+  constructor(fieldString, required, shape, types) {
     this.fieldString = fieldString;
     this.required = required;
 
@@ -7,8 +7,12 @@ class ColiseumField {
       this.shape = shape;
     }
 
+    if (types && fieldString === 'array') {
+      this.types = types;
+    }
+
     if (!required) {
-      this.isRequired = new ColiseumField(fieldString, true, shape);
+      this.isRequired = new ColiseumField(fieldString, true, shape, types);
     }
   }
 
@@ -32,6 +36,19 @@ function shapeOf(shape) {
   return new ColiseumField('object', false, shape);
 }
 
+function arrayOf(types) {
+  if (!Array.isArray(types)) {
+    throw new Error('The argument passed to arrayOf must be an array of ColiseumFields');
+  }
+  types.forEach((type) => {
+    if (!(type instanceof ColiseumField)) {
+      throw new Error(`The type ${type} isn't an instance of ColiseumField!`);
+    }
+  });
+
+  return new ColiseumField('array', false, undefined, types);
+}
+
 export default {
   ColiseumField,
   string,
@@ -39,5 +56,6 @@ export default {
   number,
   object,
   shapeOf,
+  arrayOf,
 };
 
