@@ -1,10 +1,12 @@
-import ColiseumField from './ColiseumField';
+import ColiseumProps from './ColiseumProps';
 
 class ColiseumModel {
   constructor(data) {
-    if (!(data instanceof ColiseumField.ColiseumField)) {
+    if (typeof data !== 'object') {
+      throw new Error('The ColiseumModel argument must be a flat object or an instance of the ColiseumField class');
+    } else if (!(data instanceof ColiseumProps.ColiseumField)) {
       Object.keys(data).forEach((key) => {
-        if (!(data[key] instanceof ColiseumField.ColiseumField)) {
+        if (!(data[key] instanceof ColiseumProps.ColiseumField)) {
           throw new Error(`The field ${key} isn't an instance of ColiseumField!`);
         }
       });
