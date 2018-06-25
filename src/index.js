@@ -4,13 +4,14 @@ import ColiseumField from './classes/ColiseumField';
 const app = new Coliseum({ dbHost: '' });
 
 app.model(
-  'Test',
-  { array: ColiseumField.Array(), string: ColiseumField.String() },
-  {
-    onGet: () => console.log('onGet'),
-    onDelete: () => console.log('onDelete'),
-  },
+  'Person',
+  ColiseumField.shapeOf({
+    name: ColiseumField.string.isRequired,
+    age: ColiseumField.number.isRequired,
+  }),
 );
 
-app.start();
-app.close();
+console.log(ColiseumField.shapeOf({
+  name: ColiseumField.string.isRequired,
+  age: ColiseumField.number.isRequired,
+}).isRequired);
