@@ -61,12 +61,10 @@ class ColiseumField {
             const cField = this.shape[elKey];
 
             if (!cField.is(el)) return true;
-
             return false;
           });
 
           if (!diff) return true;
-
           return false;
         }
         return true;
@@ -75,15 +73,12 @@ class ColiseumField {
       return dataType === this.fieldString;
     }
   }
-
-  get() {
-    return this.fieldString;
-  }
 }
 
+const bool = new ColiseumField('boolean', false);
+const number = new ColiseumField('number', false);
 const string = new ColiseumField('string', false);
 const array = new ColiseumField('array', false);
-const number = new ColiseumField('number', false);
 const object = new ColiseumField('object', false);
 
 function shapeOf(shape) {
@@ -111,9 +106,10 @@ function arrayOf(types) {
 
 export default {
   ColiseumField,
+  bool,
+  number,
   string,
   array,
-  number,
   object,
   shapeOf,
   arrayOf,
