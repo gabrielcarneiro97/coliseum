@@ -5,15 +5,10 @@ import ColiseumProps from './classes/ColiseumProps';
 
 const person = ColiseumProps.shapeOf({
   name: ColiseumProps.string.isRequired,
-  age: ColiseumProps.number,
+  age: ColiseumProps.number.isRequired,
   address: ColiseumProps.shapeOf({
-    street: ColiseumProps.string.isRequired,
-    number: ColiseumProps.number.isRequired,
-  }).isRequired,
-  cell: ColiseumProps.arrayOf([
-    ColiseumProps.string,
-  ]),
+    street: ColiseumProps.string,
+  }).isNullable,
 });
 
-console.log(person.is({ name: 'Gabriel', age: 20, address: { street: 'rua', number: 404 } }));
-console.log(ColiseumProps.array.is([]));
+console.log(person.is({ name: 'Gabriel', age: 20, address: {} }));

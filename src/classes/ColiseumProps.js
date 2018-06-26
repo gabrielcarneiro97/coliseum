@@ -1,10 +1,19 @@
 class ColiseumField {
-  constructor(fieldString, required, shape, types) {
+  constructor(fieldString, required, shape, types, nullable) {
     this.fieldString = fieldString;
     this.required = required;
 
-    if (shape && fieldString === 'object') {
-      this.shape = shape;
+    if (fieldString === 'object') {
+      if (shape) {
+        this.shape = shape;
+      }
+
+      if (!nullable) {
+        this.nullable = false;
+        this.isNullable = new ColiseumField(fieldString, true, shape, types, true);
+      } else {
+        this.nullable = nullable;
+      }
     }
 
     if (types && fieldString === 'array') {
@@ -12,7 +21,7 @@ class ColiseumField {
     }
 
     if (!required) {
-      this.isRequired = new ColiseumField(fieldString, true, shape, types);
+      this.isRequired = new ColiseumField(fieldString, true, shape, types, false);
     }
   }
 
@@ -48,11 +57,21 @@ class ColiseumField {
       }
       if (dataType === 'object' && this.fieldString === 'object') {
         if (this.shape) {
+          if (!data) {
+            return this.nullable;
+          }
           const dataKeys = Object.keys(data);
           const shapeKeys = Object.keys(this.shape);
 
           if ((dataKeys.length < shapeKeys.length) &&
-            shapeKeys.find(elKey => this.shape[elKey].required && !dataKeys.includes(elKey))) {
+            shapeKeys.find((elKey) => {
+              const isRequired = this.shape[elKey].required && !dataKeys.includes(elKey);
+              const isNullable = this.shape[elKey].fieldString === 'object' && !this.shape[elKey].nullable && !data[dataKeys];
+
+              if (isRequired) return true;
+              else if (isNullable) return true;
+              return false;
+            })) {
             return false;
           }
 
@@ -75,11 +94,14 @@ class ColiseumField {
   }
 }
 
+const undef = new ColiseumField('undefined', false);
 const bool = new ColiseumField('boolean', false);
 const number = new ColiseumField('number', false);
 const string = new ColiseumField('string', false);
 const array = new ColiseumField('array', false);
 const object = new ColiseumField('object', false);
+const symbol = new ColiseumField('symbol', false);
+const func = new ColiseumField('function', false);
 
 function shapeOf(shape) {
   Object.keys(shape).forEach((key) => {
@@ -106,11 +128,14 @@ function arrayOf(types) {
 
 export default {
   ColiseumField,
+  undef,
   bool,
   number,
   string,
   array,
   object,
+  symbol,
+  func,
   shapeOf,
   arrayOf,
 };
