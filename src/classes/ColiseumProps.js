@@ -1,7 +1,8 @@
 class ColiseumField {
-  constructor(fieldString, required, shape, types, nullable) {
+  constructor(fieldString = '', required = false, shape = null, types = null, nullable = false) {
     this.fieldString = fieldString;
     this.required = required;
+    this.nullable = nullable;
 
     if (fieldString === 'object') {
       if (shape) {
@@ -9,10 +10,7 @@ class ColiseumField {
       }
 
       if (!nullable) {
-        this.nullable = false;
         this.isNullable = new ColiseumField(fieldString, true, shape, types, true);
-      } else {
-        this.nullable = nullable;
       }
     }
 
