@@ -6,6 +6,9 @@ class ColiseumField {
 
     if (fieldString === 'object') {
       if (shape) {
+        const notField = Object.keys(shape).forEach(key => !(shape[key] instanceof ColiseumField));
+
+        if (notField) throw new Error(`${notField} isn't an instance of ColiseumField`);
         this.shape = shape;
       }
 
@@ -25,7 +28,7 @@ class ColiseumField {
 
   is(data) {
     if (data instanceof ColiseumField) {
-      throw new Error('Method is expects anything except an instance of ColiseumField');
+      throw new Error('Method ColiseumField.is() expects anything except an instance of ColiseumField');
     } else {
       const dataType = typeof data;
 
@@ -120,7 +123,7 @@ function arrayOf(types) {
     }
   });
 
-  return new ColiseumField('array', false, undefined, types);
+  return new ColiseumField('array', false, null, types);
 }
 
 export default {

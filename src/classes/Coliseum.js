@@ -15,8 +15,8 @@ class Coliseum {
     };
   }
 
-  model(name, data, events) {
-    this.models[name] = new ColiseumModel(data);
+  model(name, shape, events) {
+    this.models[name] = new ColiseumModel(shape);
     this.routers[name] = new ColiseumRouter({
       routeName: name,
       expressApp: this.expressApp,
