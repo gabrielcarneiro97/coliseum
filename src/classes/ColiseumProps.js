@@ -12,8 +12,8 @@ class ColiseumField {
         this.shape = shape;
       }
 
-      if (!nullable) {
-        this.isNullable = new ColiseumField(fieldString, true, shape, types, true);
+      if (!nullable && !required) {
+        this.isNullable = new ColiseumField(fieldString, false, shape, types, true);
       }
     }
 
@@ -21,7 +21,7 @@ class ColiseumField {
       this.types = types;
     }
 
-    if (!required) {
+    if (!required && !nullable) {
       this.isRequired = new ColiseumField(fieldString, true, shape, types, false);
     }
   }
@@ -57,10 +57,9 @@ class ColiseumField {
         }
       }
       if (dataType === 'object' && this.fieldString === 'object') {
-        if (this.shape) {
-          if (!data) {
-            return this.nullable;
-          }
+        if (!data) {
+          return this.nullable;
+        } else if (this.shape) {
           const dataKeys = Object.keys(data);
           const shapeKeys = Object.keys(this.shape);
 
