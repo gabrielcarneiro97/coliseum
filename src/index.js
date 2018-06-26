@@ -11,4 +11,4 @@ const person = ColiseumProps.shapeOf({
   }).isNullable,
 });
 
-console.log(ColiseumProps.object.isNullable);
+console.log(person.is({ name: 'Gabriel', age: 20 }));

@@ -13,7 +13,7 @@ class ColiseumField {
       }
 
       if (!nullable && !required) {
-        this.isNullable = new ColiseumField(fieldString, false, shape, types, true);
+        this.isNullable = new ColiseumField(fieldString, true, shape, types, true);
       }
     }
 
