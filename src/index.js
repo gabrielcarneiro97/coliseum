@@ -7,8 +7,8 @@ const person = ColiseumProps.shapeOf({
   name: ColiseumProps.string.isRequired,
   age: ColiseumProps.number.isRequired,
   address: ColiseumProps.shapeOf({
-    street: ColiseumProps.string,
+    street: ColiseumProps.string.isRequired,
   }).isNullable,
 });
 
-console.log(person.is({ name: 'Gabriel', age: 20, address: {} }));
+console.log(person.is({ name: 'Gabriel', age: 20, address: null }));

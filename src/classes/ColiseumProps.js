@@ -65,12 +65,10 @@ class ColiseumField {
 
           if ((dataKeys.length < shapeKeys.length) &&
             shapeKeys.find((elKey) => {
-              const isRequired = this.shape[elKey].required && !dataKeys.includes(elKey);
-              const isNullable = this.shape[elKey].fieldString === 'object' && !this.shape[elKey].nullable && !data[dataKeys];
+              const checkRequirement = this.shape[elKey].required && !dataKeys.includes(elKey);
+              const checkNullability = this.shape[elKey].fieldString === 'object' && !this.shape[elKey].nullable && !data[dataKeys];
 
-              if (isRequired) return true;
-              else if (isNullable) return true;
-              return false;
+              return checkRequirement || checkNullability;
             })) {
             return false;
           }
@@ -79,7 +77,8 @@ class ColiseumField {
             const el = data[elKey];
             const cField = this.shape[elKey];
 
-            if (!cField.is(el)) return true;
+            if (!cField) return true;
+            else if (!cField.is(el)) return true;
             return false;
           });
 
