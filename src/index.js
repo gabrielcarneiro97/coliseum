@@ -6,9 +6,6 @@ import ColiseumProps from './classes/ColiseumProps';
 const person = ColiseumProps.shapeOf({
   name: ColiseumProps.string.isRequired,
   age: ColiseumProps.number.isRequired,
-  address: ColiseumProps.shapeOf({
-    street: ColiseumProps.string,
-  }).isNullable,
 });
 
-console.log(person.is({ name: 'Gabriel', age: 20 }));
+console.log(person.is({ age: 20 }));

@@ -88,6 +88,10 @@ class ColiseumField {
         return true;
       }
 
+      if (!this.required && !data) {
+        return true;
+      }
+
       return dataType === this.fieldString;
     }
   }
