@@ -4,16 +4,16 @@ class ColiseumField {
     this.required = required;
     this.nullable = !required || nullable;
 
+    if (!nullable && !required) {
+      this.isNullable = new ColiseumField(fieldString, true, shape, types, true);
+    }
+
     if (fieldString === 'object') {
       if (shape) {
         const notField = Object.keys(shape).find(key => !(shape[key] instanceof ColiseumField));
 
         if (notField) throw new Error(`${notField} isn't an instance of ColiseumField`);
         this.shape = shape;
-      }
-
-      if (!nullable && !required) {
-        this.isNullable = new ColiseumField(fieldString, true, shape, types, true);
       }
     }
 
@@ -30,6 +30,10 @@ class ColiseumField {
     if (data instanceof ColiseumField) {
       throw new Error('Method ColiseumField.is() expects anything except an instance of ColiseumField');
     } else {
+      if (!data) {
+        return this.nullable;
+      }
+
       const dataType = typeof data;
 
       if (dataType === 'object' && this.fieldString === 'array') {
@@ -42,9 +46,7 @@ class ColiseumField {
         }
       }
       if (dataType === 'object' && this.fieldString === 'object') {
-        if (!data) {
-          return this.nullable;
-        } else if (this.shape) {
+        if (this.shape) {
           const dataKeys = Object.keys(data);
           const shapeKeys = Object.keys(this.shape);
 
