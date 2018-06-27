@@ -6,7 +6,7 @@ class ColiseumField {
 
     if (fieldString === 'object') {
       if (shape) {
-        const notField = Object.keys(shape).forEach(key => !(shape[key] instanceof ColiseumField));
+        const notField = Object.keys(shape).find(key => !(shape[key] instanceof ColiseumField));
 
         if (notField) throw new Error(`${notField} isn't an instance of ColiseumField`);
         this.shape = shape;
@@ -35,23 +35,8 @@ class ColiseumField {
       if (dataType === 'object' && this.fieldString === 'array') {
         if (Array.isArray(data)) {
           if (this.types) {
-            for (let i = 0; i < data.length; i += 1) {
-              const el = data[i];
-
-              let someType = false;
-              for (let iTypes = 0; iTypes < this.types.length; iTypes += 1) {
-                const type = this.types[iTypes];
-
-                if (type.is(el)) {
-                  someType = true;
-                  break;
-                }
-              }
-
-              if (!someType) return false;
-
-              someType = false;
-            }
+            const notListed = data.find(el => !this.types.find(type => type.is(el)));
+            if (notListed) return false;
           }
           return true;
         }
@@ -63,14 +48,15 @@ class ColiseumField {
           const dataKeys = Object.keys(data);
           const shapeKeys = Object.keys(this.shape);
 
-          if ((dataKeys.length < shapeKeys.length) &&
-            shapeKeys.find((elKey) => {
+          if (dataKeys.length < shapeKeys.length) {
+            const checkKeys = shapeKeys.find((elKey) => {
               const checkRequirement = this.shape[elKey].required && !dataKeys.includes(elKey);
               const checkNullability = this.shape[elKey].fieldString === 'object' && !this.shape[elKey].nullable && !data[dataKeys];
 
               return checkRequirement || checkNullability;
-            })) {
-            return false;
+            });
+
+            if (checkKeys) return false;
           }
 
           const diff = dataKeys.find((elKey) => {
@@ -78,12 +64,10 @@ class ColiseumField {
             const cField = this.shape[elKey];
 
             if (!cField) return true;
-            else if (!cField.is(el)) return true;
-            return false;
+            return !cField.is(el);
           });
 
-          if (!diff) return true;
-          return false;
+          return !diff;
         }
         return true;
       }
@@ -97,14 +81,9 @@ class ColiseumField {
   }
 }
 
-const undef = new ColiseumField('undefined', false);
-const bool = new ColiseumField('boolean', false);
-const number = new ColiseumField('number', false);
-const string = new ColiseumField('string', false);
-const array = new ColiseumField('array', false);
-const object = new ColiseumField('object', false);
-const symbol = new ColiseumField('symbol', false);
-const func = new ColiseumField('function', false);
+function createField(type) {
+  return new ColiseumField(type);
+}
 
 function shapeOf(shape) {
   Object.keys(shape).forEach((key) => {
@@ -118,7 +97,7 @@ function shapeOf(shape) {
 
 function arrayOf(types) {
   if (!Array.isArray(types)) {
-    throw new Error('The argument passed to arrayOf must be an array of ColiseumFields');
+    throw new Error('The argument passed to arrayOf must be an array of ColiseumField instances');
   }
   types.forEach((type) => {
     if (!(type instanceof ColiseumField)) {
@@ -131,14 +110,14 @@ function arrayOf(types) {
 
 export default {
   ColiseumField,
-  undef,
-  bool,
-  number,
-  string,
-  array,
-  object,
-  symbol,
-  func,
+  undef: createField('undefined'),
+  bool: createField('boolean'),
+  number: createField('number'),
+  string: createField('string'),
+  array: createField('array'),
+  object: createField('object'),
+  symbol: createField('symbol'),
+  func: createField('function'),
   shapeOf,
   arrayOf,
 };

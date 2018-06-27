@@ -9,7 +9,7 @@ class ColiseumModel {
 
       const notField = Object
         .keys(data)
-        .forEach(key => !(data[key] instanceof ColiseumProps.ColiseumField));
+        .find(key => !(data[key] instanceof ColiseumProps.ColiseumField));
 
       if (notField) throw new Error(`${notField} isn't an instance of ColiseumField`);
       this.shape = data;

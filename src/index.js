@@ -8,4 +8,4 @@ const person = ColiseumProps.shapeOf({
   age: ColiseumProps.number.isRequired,
 });
 
-console.log(person.is({ age: 20 }));
+console.log(ColiseumProps.arrayOf([person]).is([{ name: 'Gabriel', age: 20 }]));
